@@ -77,7 +77,25 @@ class TaskController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $request->validate([
+            'content' => 'required|string'
+        ]);
+        $task = Task::find($id);
+        if(!$task){
+            return response()->json([
+                'errors' =>'Not found'
+            ], 404);
+        }
+        if($task->user->id !== Auth::id()){
+            return response()->json([
+                'errors' => 'Forbidden'
+            ], 403);
+        }
+        $task->body = $request->content;
+        $task->save();
+        return response()->json([
+            $task
+        ], 200);
     }
 
     /**
