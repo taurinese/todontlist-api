@@ -19,7 +19,7 @@ class TaskController extends Controller
         $tasks = Auth::user()->tasks()->get();
         return response()->json([
             'tasks' => $tasks
-        ]);
+        ], 201);
     }
 
     /**
@@ -41,6 +41,7 @@ class TaskController extends Controller
             'user_id' => $request->user()->id
         ]);
         $task->save();
+        return response()->json($task, 201);
     }
 
     /**
@@ -53,14 +54,18 @@ class TaskController extends Controller
     {
         $task = Task::find($id);
         if(!$task){
-            return response()->json('Not found', 404);
+            return response()->json([
+                'errors' =>'Not found'
+            ], 404);
         }
         if($task->user->id !== Auth::id()){
-            return response()->json('Forbidden', 403);
+            return response()->json([
+                'errors' => 'Forbidden'
+            ], 403);
         }
         return response()->json([
             $task
-        ]);
+        ], 200);
     }
 
     /**
@@ -83,6 +88,20 @@ class TaskController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $task = Task::find($id);
+        if(!$task){
+            return response()->json([
+                'errors' =>'Not found'
+            ], 404);
+        }
+        if($task->user->id !== Auth::id()){
+            return response()->json([
+                'errors' => 'Forbidden'
+            ], 403);
+        }
+        $task->delete();
+        return response()->json([
+            $task
+        ], 200);
     }
 }

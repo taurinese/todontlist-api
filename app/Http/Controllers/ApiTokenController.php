@@ -33,7 +33,7 @@ class ApiTokenController extends Controller
             'name' => $user->name,
             'email' => $user->email,
             'created_at' => $user->created_at
-            ]);
+        ], 201);
     }
 
     
@@ -61,7 +61,7 @@ class ApiTokenController extends Controller
             'name' => $user->name,
             'email' => $user->email,
             'created_at' => $user->created_at
-            ]);
+        ], 200);
     }
 
     public function logout(Request $request)
@@ -78,7 +78,7 @@ class ApiTokenController extends Controller
             'email' => $request->user()->email,
             'created_at' => $request->user()->created_at,
             'updated_at' => $request->user()->updated_at
-        ]);
+        ], 200);
     }
 
 
