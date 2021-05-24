@@ -53,12 +53,12 @@ class TaskController extends Controller
     public function show($id)
     {
         $task = Task::find($id);
-        if(!$task){
+        if (!$task) {
             return response()->json([
-                'errors' =>'Not found'
+                'errors' => 'Not found'
             ], 404);
         }
-        if($task->user->id !== Auth::id()){
+        if ($task->user->id !== Auth::id()) {
             return response()->json([
                 'errors' => 'Forbidden'
             ], 403);
@@ -81,17 +81,18 @@ class TaskController extends Controller
             'content' => 'required|string'
         ]);
         $task = Task::find($id);
-        if(!$task){
+        if (!$task) {
             return response()->json([
-                'errors' =>'Not found'
+                'errors' => 'Not found'
             ], 404);
         }
-        if($task->user->id !== Auth::id()){
+        if ($task->user->id !== Auth::id()) {
             return response()->json([
                 'errors' => 'Forbidden'
             ], 403);
         }
         $task->body = $request->content;
+        $task->done = $request->done;
         $task->save();
         return response()->json([
             $task
@@ -107,12 +108,12 @@ class TaskController extends Controller
     public function destroy($id)
     {
         $task = Task::find($id);
-        if(!$task){
+        if (!$task) {
             return response()->json([
-                'errors' =>'Not found'
+                'errors' => 'Not found'
             ], 404);
         }
-        if($task->user->id !== Auth::id()){
+        if ($task->user->id !== Auth::id()) {
             return response()->json([
                 'errors' => 'Forbidden'
             ], 403);
