@@ -18,8 +18,8 @@ class ApiTokenController extends Controller
 
         $exists = User::where('email', $request->email)->exists();
 
-        if($exists){
-            return response()->json(['error' => 'You are already registered. Please login instead.'], 409);
+        if ($exists) {
+            return response()->json(['errors' => 'You are already registered. Please login instead.'], 409);
         }
 
         $user = User::create([
@@ -36,7 +36,7 @@ class ApiTokenController extends Controller
         ], 201);
     }
 
-    
+
     public function login(Request $request)
     {
         $request->validate([
@@ -46,7 +46,7 @@ class ApiTokenController extends Controller
 
         $user = User::where('email', $request->email)->first();
 
-        if (! $user || ! Hash::check($request->password, $user->password)) {
+        if (!$user || !Hash::check($request->password, $user->password)) {
             return response()->json([
                 "errors" => 'The provided credentials are incorrect.'
             ], 401);
@@ -80,6 +80,4 @@ class ApiTokenController extends Controller
             'updated_at' => $request->user()->updated_at
         ], 200);
     }
-
-
 }
